@@ -1,13 +1,14 @@
 uses GraphABC;
 //                 [number]
 var
-  anttime, antx, anty, larvax, larvay,larvatime: array[1..100] of integer;
-
+  anttime, antx, anty, larvax, larvay, larvatime: array[1..100] of integer;
+var
+antfun: array[1..100] of integer;
 var
   map: array[1..500] of array[1..500] of array[1..2] of integer;
 
 var
-  i, ii, x, y, t, gen: integer;
+  i, ii, x, y, t, gen, n: integer;
 
 var
   text: string;
@@ -51,7 +52,7 @@ begin
             1: setpixel(i, ii, clBlack);
             2: setpixel(i, ii, clRed);
             3: setpixel(i, ii, clWhite);
-            4: setpixel(i, ii, clBrown);
+            4: setpixel(i, ii, clGreen);
             5: setpixel(i, ii, clFireBrick);
           end;
         end;
@@ -62,32 +63,64 @@ begin
     //муравьи идут
     for i := 1 to 10 do
     begin
-    if anttime[i]>0 then
-    begin
-      x := random(-1, 1);
-      y := random(-1, 1);
-      if antx[i] <= 2 then if x <= 0 then x := 1;
-      if anty[i] <= 2 then if y <= 0 then y := 1;
-      if antx[i] >= 498 then if x >= 0 then x := -1;
-      if anty[i] >= 498 then if y >= 0 then y := -1;
-      antx[i] := antx[i] + x;
-      
-      anty[i] := anty[i] + y;
+      if anttime[i] > 0 then
+      begin
+        x := random(-1, 1);
+        y := random(-1, 1);
+        if antx[i] <= 2 then if x <= 0 then x := 1;
+        if anty[i] <= 2 then if y <= 0 then y := 1;
+        if antx[i] >= 498 then if x >= 0 then x := -1;
+        if anty[i] >= 498 then if y >= 0 then y := -1;
+        antx[i] := antx[i] + x;    
+        anty[i] := anty[i] + y;
+        //муравьи радуються
+        for ii := 1 to 10 do
+        begin
+          if ii<>i then 
+          begin
+      //    if antx[i]=antx[ii] then if anty[i]=anty[ii] then antfun[i]:=500;
+         if (antx[i]+10)<=(antx[ii]) then if (antx[i]+11)>(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
+         if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
+         if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
+         if (anty[i]-10)>=(anty[ii]) then if (anty[i]-11)<(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;      
+         // antfun[i]:=500;
+          end;
+        end;
       end;
       //личинки
       
       if anttime[i] > 0 then anttime[i] := anttime[i] - 1;
-     if larvatime[i] = 0 then
-     begin
-      if anttime[i] = 50 then larvax[i] := antx[i];
-      if anttime[i] = 50 then larvay[i] := anty[i];
-      if anttime[i] = 50 then larvatime[i]:=random(500,1000);
-    end;
-    
+      if larvatime[i] = 0 then
+      begin
+        if anttime[i] = 50 then larvax[i] := antx[i];
+        if anttime[i] = 50 then larvay[i] := anty[i];
+        if anttime[i] = 50 then larvatime[i] := random(500, 1000);
+      end;
+      
     end;
     
     //муравьи копают
     for i := 1 to 10 do
+    begin
+    
+    //если рад
+    if antfun[i] >= 1 then
+    begin
+      map[antx[i]][anty[i]][2] := 4;
+      map[antx[i] + 1][anty[i]][2] := 2;
+      map[antx[i] - 1][anty[i]][2] := 2;
+      map[antx[i]][anty[i] + 1][2] := 2;
+      map[antx[i]][anty[i] - 1][2] := 2;
+      map[antx[i] - 1][anty[i] - 1][2] := 2;
+      map[antx[i] + 1][anty[i] - 1][2] := 2;
+      map[antx[i] + 1][anty[i] + 1][2] := 2;
+      map[antx[i] - 1][anty[i] + 1][2] := 2;
+     anttime[i]:=anttime[i]+50;
+     antfun[i]:=antfun[i]-1;
+    end;
+    
+    //если не рад
+    if antfun[i] = 0 then
     begin
       map[antx[i]][anty[i]][2] := 1;
       map[antx[i] + 1][anty[i]][2] := 2;
@@ -99,32 +132,33 @@ begin
       map[antx[i] + 1][anty[i] + 1][2] := 2;
       map[antx[i] - 1][anty[i] + 1][2] := 2;
     end;
+    end;
     
     //личинки существуют
     for i := 1 to 10 do
     begin
-      if larvatime[i]>=51 then map[larvax[i]][larvay[i]][2]:=3;
-      if larvatime[i]>=51 then larvatime[i]:=larvatime[i]-1;
-      if larvatime[i]=50 then
-    begin
-          map[antx[i]][anty[i]][2] := 5; 
-      map[antx[i] + 1][anty[i]][2] := 5;
-      map[antx[i] - 1][anty[i]][2] := 5;
-      map[antx[i]][anty[i] + 1][2] := 5;
-      map[antx[i]][anty[i] - 1][2] := 5;
-      map[antx[i] - 1][anty[i] - 1][2] := 5;
-      map[antx[i] + 1][anty[i] - 1][2] := 5;
-      map[antx[i] + 1][anty[i] + 1][2] := 5;
-      map[antx[i] - 1][anty[i] + 1][2] := 5;
-      anttime[i]:=random(250,5000);
-      antx[i]:=larvax[i];
-    anty[i]:=larvay[i];
-    larvatime[i]:=0;
-    gen:=gen+1;
-    textOut (512,1,'generation : '+gen);
+      if larvatime[i] >= 51 then map[larvax[i]][larvay[i]][2] := 3;
+      if larvatime[i] >= 51 then larvatime[i] := larvatime[i] - 1;
+      if larvatime[i] = 50 then
+      begin
+        map[antx[i]][anty[i]][2] := 5; 
+        map[antx[i] + 1][anty[i]][2] := 5;
+        map[antx[i] - 1][anty[i]][2] := 5;
+        map[antx[i]][anty[i] + 1][2] := 5;
+        map[antx[i]][anty[i] - 1][2] := 5;
+        map[antx[i] - 1][anty[i] - 1][2] := 5;
+        map[antx[i] + 1][anty[i] - 1][2] := 5;
+        map[antx[i] + 1][anty[i] + 1][2] := 5;
+        map[antx[i] - 1][anty[i] + 1][2] := 5;
+        anttime[i] := random(250, 5000);
+        antx[i] := larvax[i];
+        anty[i] := larvay[i];
+        larvatime[i] := 0;
+        gen := gen + 1;
+        textOut(512, 1, 'generation : ' + gen);
+      end;
     end;
- end;
-    textOut (512,20,'time : '+t);
-    t:=t+1;
+    textOut(512, 20, 'time : ' + t);
+    t := t + 1;
   until 2 = 3;
 end.
