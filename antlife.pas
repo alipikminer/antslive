@@ -63,6 +63,10 @@ for i:=1 to 10 do
 begin
 x:=random(-1,1);
 y:=random(-1,1);
+if antx[i]<=2 then if x<=0 then x:=1;
+if anty[i]<=2 then if y<=0 then y:=1;
+if antx[i]>=498 then if x>=0 then x:=-1;
+if anty[i]>=498 then if y>=0 then y:=-1;
 antx[i]:=antx[i]+x;
 anty[i]:=anty[i]+y;
 end;
