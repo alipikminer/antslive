@@ -7,7 +7,7 @@ var
   map: array[1..500] of array[1..500] of array[1..2] of integer;
 
 var
-  i, ii, x, y, t: integer;
+  i, ii, x, y, t, gen: integer;
 
 var
   text: string;
@@ -107,12 +107,24 @@ begin
       if larvatime[i]>=51 then larvatime[i]:=larvatime[i]-1;
       if larvatime[i]=50 then
     begin
+          map[antx[i]][anty[i]][2] := 5; 
+      map[antx[i] + 1][anty[i]][2] := 5;
+      map[antx[i] - 1][anty[i]][2] := 5;
+      map[antx[i]][anty[i] + 1][2] := 5;
+      map[antx[i]][anty[i] - 1][2] := 5;
+      map[antx[i] - 1][anty[i] - 1][2] := 5;
+      map[antx[i] + 1][anty[i] - 1][2] := 5;
+      map[antx[i] + 1][anty[i] + 1][2] := 5;
+      map[antx[i] - 1][anty[i] + 1][2] := 5;
       anttime[i]:=random(250,5000);
       antx[i]:=larvax[i];
     anty[i]:=larvay[i];
     larvatime[i]:=0;
+    gen:=gen+1;
+    textOut (512,1,'generation : '+gen);
     end;
  end;
-    
+    textOut (512,20,'time : '+t);
+    t:=t+1;
   until 2 = 3;
 end.
