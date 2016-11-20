@@ -1,18 +1,81 @@
-//uses GraphABC;
-//             [x]             [y]             [number]
-var ant:array[1..100] of array[1..100] of array[1..100] of string;
-var i,x,y,t: integer;
-var text: string;
+uses GraphABC;
+//                 [number]
+var
+  antx, anty: array[1..100] of integer;
+
+var
+  map: array[1..500] of array[1..500] of integer;
+
+var
+  i, ii, x, y, t: integer;
+
+var
+  text: string;
+
 begin
 randomize();
-for i:=1 to 100 do
+//Заполение всего экрана замлёй
+for i := 1 to 500 do
 begin
-x:=random(1,50);
-y:=random(1,50);
-t:=random(1,5);
-text:='x : '+x+' y : '+y+' type : '+t+' number : '+i;
-ant[x][y][i]:=text;
-writeln (ant[x][y][i]);
+for ii := 1 to 500 do
+begin
+map[i][ii]:=5;  
+end;   
+end;
+//создание муравьишек
+for i:= 1 to 10 do
+
+begin
+x:=random(1,500);
+y:=random(1,500);
+antx[i]:=x;
+anty[i]:=y;
+map[antx[i]][anty[i]]:=1;
+map[antx[i]+1][anty[i]]:=2;
+map[antx[i]-1][anty[i]]:=2;
+map[antx[i]][anty[i]+1]:=2;
+map[antx[i]][anty[i]-1]:=2;
 end;
 
+repeat
+
+//обновление экрана
+for i := 1 to 500 do
+begin
+for ii := 1 to 500 do
+begin
+ case map[i][ii] of
+1:setpixel(i,ii,clBlack);
+2:setpixel(i,ii,clRed);
+3:setpixel(i,ii,clBrown);
+4:setpixel(i,ii,clBrown);
+5:setpixel(i,ii,clFireBrick);
+end;
+end;
+end;
+
+//муравьи идут
+for i:=1 to 10 do
+begin
+x:=random(-1,1);
+y:=random(-1,1);
+antx[i]:=antx[i]+x;
+anty[i]:=anty[i]+y;
+end;
+
+//муравьи копают
+for i:=1 to 10 do
+begin
+map[antx[i]][anty[i]]:=1;
+map[antx[i]+1][anty[i]]:=2;
+map[antx[i]-1][anty[i]]:=2;
+map[antx[i]][anty[i]+1]:=2;
+map[antx[i]][anty[i]-1]:=2;
+map[antx[i]-1][anty[i]-1]:=2;
+map[antx[i]+1][anty[i]-1]:=2;
+map[antx[i]+1][anty[i]+1]:=2;
+map[antx[i]-1][anty[i]+1]:=2;
+end;
+
+until 2=3;
 end.
