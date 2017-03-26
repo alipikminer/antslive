@@ -70,22 +70,53 @@ begin
     if anty[i] <= 495 then if map[antx[i]][anty[i]+2][2]=5 then  x:=1;
     if anty[i] >= 5 then if map[antx[i]][anty[i]-2][2]=5 then  x:=-1;
       if map[antx[i]+2][anty[i]][2]>=5 then if map[antx[i]-2][anty[i]][2]>=5 then if map[antx[i]][anty[i]+2][2]>=5 then if map[antx[i]][anty[i]-2][2]>=5 then x := random(-1, 1); y := random(-1, 1);
+      
+      for ii := 1 to 10 do
+        begin
+          if ii<>i then 
+          begin
+         //Алгоритм поиска других муравьёв и движения к ним
+         if (antx[i]+30)<=(antx[ii]) then if (antx[i]+31)>(antx[ii]) then x:=1;
+         if (antx[i]-30)>=(antx[ii]) then if (antx[i]-31)<(antx[ii]) then x:=-1;
+         if (anty[i]+30)<=(anty[ii]) then if (anty[i]+31)>(anty[ii]) then y:=1;
+         if (anty[i]-30)>=(anty[ii]) then if (anty[i]-31)<(anty[ii]) then y:=-1; 
+         
+         
+         if (antx[i]+40)<=(antx[ii]) then if (antx[i]+41)>(antx[ii]) then x:=1;
+         if (antx[i]-40)>=(antx[ii]) then if (antx[i]-41)<(antx[ii]) then x:=-1;
+         if (anty[i]+40)<=(anty[ii]) then if (anty[i]+41)>(anty[ii]) then y:=1;
+         if (anty[i]-40)>=(anty[ii]) then if (anty[i]-41)<(anty[ii]) then y:=-1; 
+         
+         
+         if (antx[i]+50)<=(antx[ii]) then if (antx[i]+51)>(antx[ii]) then x:=1;
+         if (antx[i]-50)>=(antx[ii]) then if (antx[i]-51)<(antx[ii]) then x:=-1;
+         if (anty[i]+50)<=(anty[ii]) then if (anty[i]+51)>(anty[ii]) then y:=1;
+         if (anty[i]-50)>=(anty[ii]) then if (anty[i]-51)<(anty[ii]) then y:=-1; 
+         
+         
+         if (antx[i]+60)<=(antx[ii]) then if (antx[i]+61)>(antx[ii]) then x:=1;
+         if (antx[i]-60)>=(antx[ii]) then if (antx[i]-61)<(antx[ii]) then x:=-1;
+         if (anty[i]+60)<=(anty[ii]) then if (anty[i]+61)>(anty[ii]) then y:=1;
+         if (anty[i]-60)>=(anty[ii]) then if (anty[i]-61)<(anty[ii]) then y:=-1; 
+         end;
+         end;
         if antx[i] <= 2 then if x <= 0 then x := 1;
         if anty[i] <= 2 then if y <= 0 then y := 1;
         if antx[i] >= 498 then if x >= 0 then x := -1;
         if anty[i] >= 498 then if y >= 0 then y := -1;
       antx[i] := antx[i] + x;    
       anty[i] := anty[i] + y;
-        //муравьи радуються
+
+        //Взаимодействие между муравьями
         for ii := 1 to 10 do
         begin
           if ii<>i then 
           begin
-      //    if antx[i]=antx[ii] then if anty[i]=anty[ii] then antfun[i]:=500;
+          //Алгоритм поиска других муравьёв и радости
          if (antx[i]+10)<=(antx[ii]) then if (antx[i]+11)>(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
          if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
          if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
-         if (anty[i]-10)>=(anty[ii]) then if (anty[i]-11)<(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;      
+         if (anty[i]-10)>=(anty[ii]) then if (anty[i]-11)<(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
          // antfun[i]:=500;
           end;
         end;
@@ -161,7 +192,11 @@ begin
         textOut(512, 1, 'generation : ' + gen);
       end;
     end;
-    textOut(512, 20, 'time : ' + t);
+    textOut(512, 20, 'time : ' + t/100);
     t := t + 1;
+    for i:=1 to 10 do
+    begin
+    textOut(512, i*10+i*3+30, 'ant '+i+' time : ' + anttime[i]/100);
+    end;
   until 2 = 3;
 end.
