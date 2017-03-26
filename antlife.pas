@@ -65,14 +65,17 @@ begin
     begin
       if anttime[i] > 0 then
       begin
-        x := random(-1, 1);
-        y := random(-1, 1);
+    if antx[i] <= 495 then if map[antx[i]+2][anty[i]][2]=5 then  x:=1;
+    if antx[i] >= 5 then if map[antx[i]-2][anty[i]][2]=5 then  x:=-1;
+    if anty[i] <= 495 then if map[antx[i]][anty[i]+2][2]=5 then  x:=1;
+    if anty[i] >= 5 then if map[antx[i]][anty[i]-2][2]=5 then  x:=-1;
+      if map[antx[i]+2][anty[i]][2]>=5 then if map[antx[i]-2][anty[i]][2]>=5 then if map[antx[i]][anty[i]+2][2]>=5 then if map[antx[i]][anty[i]-2][2]>=5 then x := random(-1, 1); y := random(-1, 1);
         if antx[i] <= 2 then if x <= 0 then x := 1;
         if anty[i] <= 2 then if y <= 0 then y := 1;
         if antx[i] >= 498 then if x >= 0 then x := -1;
         if anty[i] >= 498 then if y >= 0 then y := -1;
-        antx[i] := antx[i] + x;    
-        anty[i] := anty[i] + y;
+      antx[i] := antx[i] + x;    
+      anty[i] := anty[i] + y;
         //муравьи радуються
         for ii := 1 to 10 do
         begin
