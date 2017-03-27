@@ -122,6 +122,7 @@ begin
          if (antx[i]-30)>=(antx[antfriend[i]]) then if (antx[i]-31)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+30)<=(anty[antfriend[i]]) then if (anty[i]+31)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-30)>=(anty[antfriend[i]]) then if (anty[i]-31)<(anty[antfriend[i]]) then y:=-1; 
+         antmemory[1+i*9][1][2]:=3;
          end;
          if anttime[i]<=750000 then if anttime[i]>=500000 then
          begin
@@ -129,7 +130,7 @@ begin
          if (antx[i]-60)>=(antx[antfriend[i]]) then if (antx[i]-61)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+60)<=(anty[antfriend[i]]) then if (anty[i]+61)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1;
-         antmemory[i*10][i*10][2]:=3;
+         antmemory[1+i*9][1][2]:=4;
          end;
          if anttime[i]<=500000 then
          begin
@@ -137,7 +138,7 @@ begin
          if (antx[i]-90)>=(antx[antfriend[i]]) then if (antx[i]-91)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+90)<=(anty[antfriend[i]]) then if (anty[i]+91)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-90)>=(anty[antfriend[i]]) then if (anty[i]-91)<(anty[antfriend[i]]) then y:=-1;
-         antmemory[i*10][i*10][2]:=4;
+         antmemory[1+i*9][1][2]:=4;
          end;
        
         if antx[i] <= 5 then if x <= 0 then x := 1;
@@ -161,7 +162,7 @@ begin
          if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
          if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
          if (anty[i]-10)>=(anty[ii]) then if (anty[i]-11)<(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
-         antmemory[i*10][i*10][2]:=2;
+         
          // antfun[i]:=500;
           end;
         end;
@@ -196,7 +197,7 @@ begin
       map[antx[i] - 1][anty[i] + 1][2] := 2;
      anttime[i]:=anttime[i]+50;
      antfun[i]:=antfun[i]-1;
-  //   antmemory[i*10][i*10][2]:=1;
+     antmemory[i*9][1][2]:=1;
     end;
     
     //если не рад
@@ -211,7 +212,7 @@ begin
       map[antx[i] + 1][anty[i] - 1][2] := 2;
       map[antx[i] + 1][anty[i] + 1][2] := 2;
       map[antx[i] - 1][anty[i] + 1][2] := 2;
-      antmemory[i*10][i*10][2]:=5;
+      antmemory[i*9][1][2]:=5;
     end;
     end;
     
