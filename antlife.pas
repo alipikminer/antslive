@@ -116,14 +116,14 @@ begin
       
      
          //Алгоритм поиска других муравьёв и движения к ним
-         if anttime[i]<=1000 then
+         if anttime[i]<=1000000 then if anttime[i]>=750000 then
          begin
          if (antx[i]+30)<=(antx[antfriend[i]]) then if (antx[i]+31)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-30)>=(antx[antfriend[i]]) then if (antx[i]-31)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+30)<=(anty[antfriend[i]]) then if (anty[i]+31)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-30)>=(anty[antfriend[i]]) then if (anty[i]-31)<(anty[antfriend[i]]) then y:=-1; 
          end;
-         if anttime[i]<=750 then
+         if anttime[i]<=750000 then if anttime[i]>=500000 then
          begin
          if (antx[i]+60)<=(antx[antfriend[i]]) then if (antx[i]+61)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-60)>=(antx[antfriend[i]]) then if (antx[i]-61)<(antx[antfriend[i]]) then x:=-1;
@@ -131,7 +131,7 @@ begin
          if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1;
          antmemory[i*10][i*10][2]:=3;
          end;
-         if anttime[i]<=500 then
+         if anttime[i]<=500000 then
          begin
          if (antx[i]+90)<=(antx[antfriend[i]]) then if (antx[i]+91)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-90)>=(antx[antfriend[i]]) then if (antx[i]-91)<(antx[antfriend[i]]) then x:=-1;
