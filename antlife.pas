@@ -3,7 +3,7 @@ uses GraphABC;
 var
   anttime, antx, anty, larvax, larvay, larvatime: array[1..100] of integer;
 var
-antfun: array[1..100] of integer;
+antfun,antfriend: array[1..100] of integer;
 var
   map: array[1..500] of array[1..500] of array[1..2] of integer;
 
@@ -15,10 +15,18 @@ var
 
 begin
   randomize();
-  //Заполение всего экрана замлёй
+  //Заполение всего экрана выкопанной землёй замлёй
   for i := 1 to 500 do
   begin
     for ii := 1 to 500 do
+    begin
+      map[i][ii][2] := 2;  
+    end;   
+  end;
+  //Заполнение экрана невыкопанной землёй
+   for i := 5 to 495 do
+  begin
+    for ii := 5 to 495 do
     begin
       map[i][ii][2] := 5;  
     end;   
@@ -38,7 +46,11 @@ begin
     map[antx[i]][anty[i] - 1][2] := 2;
     anttime[i] := random(250, 1000);
   end;
-  
+  //привязка муравьишек друг к другу
+  for i:=1 to 10 do
+  begin
+  antfriend[i]:=random(1,10);
+  end;
   repeat
     
     //обновление экрана
@@ -77,27 +89,41 @@ begin
     if anty[i] >= 5 then if map[antx[i]][anty[i]-3][2]=5 then  x:=-1;
       if map[antx[i]+3][anty[i]][2]>=5 then if map[antx[i]-3][anty[i]][2]>=5 then if map[antx[i]][anty[i]+3][2]>=5 then if map[antx[i]][anty[i]-3][2]>=5 then x := random(-1, 1); y := random(-1, 1);
       
-      for ii := 1 to 10 do
-        begin
-          if ii<>i then 
-          begin
+     
          //Алгоритм поиска других муравьёв и движения к ним
-         if (antx[i]+30)<=(antx[ii]) then if (antx[i]+31)>(antx[ii]) then x:=1;
-         if (antx[i]-30)>=(antx[ii]) then if (antx[i]-31)<(antx[ii]) then x:=-1;
-         if (anty[i]+30)<=(anty[ii]) then if (anty[i]+31)>(anty[ii]) then y:=1;
-         if (anty[i]-30)>=(anty[ii]) then if (anty[i]-31)<(anty[ii]) then y:=-1; 
+         if anttime[i]<=1000 then
+         begin
+         if (antx[i]+30)<=(antx[antfriend[i]]) then if (antx[i]+31)>(antx[antfriend[i]]) then x:=1;
+         if (antx[i]-30)>=(antx[antfriend[i]]) then if (antx[i]-31)<(antx[antfriend[i]]) then x:=-1;
+         if (anty[i]+30)<=(anty[antfriend[i]]) then if (anty[i]+31)>(anty[antfriend[i]]) then y:=1;
+         if (anty[i]-30)>=(anty[antfriend[i]]) then if (anty[i]-31)<(anty[antfriend[i]]) then y:=-1; 
          end;
+         if anttime[i]<=750 then
+         begin
+         if (antx[i]+60)<=(antx[antfriend[i]]) then if (antx[i]+61)>(antx[antfriend[i]]) then x:=1;
+         if (antx[i]-60)>=(antx[antfriend[i]]) then if (antx[i]-61)<(antx[antfriend[i]]) then x:=-1;
+         if (anty[i]+60)<=(anty[antfriend[i]]) then if (anty[i]+61)>(anty[antfriend[i]]) then y:=1;
+         if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1; 
          end;
+         if anttime[i]<=500 then
+         begin
+         if (antx[i]+90)<=(antx[antfriend[i]]) then if (antx[i]+91)>(antx[antfriend[i]]) then x:=1;
+         if (antx[i]-90)>=(antx[antfriend[i]]) then if (antx[i]-91)<(antx[antfriend[i]]) then x:=-1;
+         if (anty[i]+90)<=(anty[antfriend[i]]) then if (anty[i]+91)>(anty[antfriend[i]]) then y:=1;
+         if (anty[i]-90)>=(anty[antfriend[i]]) then if (anty[i]-91)<(anty[antfriend[i]]) then y:=-1; 
+         end;
+       
         if antx[i] <= 5 then if x <= 0 then x := 1;
         if anty[i] <= 5 then if y <= 0 then y := 1;
         if antx[i] >= 495 then if x >= 0 then x := -1;
         if anty[i] >= 495 then if y >= 0 then y := -1;
       antx[i] := antx[i] + x;    
       anty[i] := anty[i] + y;
-if (antx[i]+90)<=(antx[ii]) then if (antx[i]+91)>(antx[ii]) then antx[i]:=antx[i]+1;
+         { if (antx[i]+90)<=(antx[ii]) then if (antx[i]+91)>(antx[ii]) then antx[i]:=antx[i]+1;
          if (antx[i]-90)>=(antx[ii]) then if (antx[i]-91)<(antx[ii]) then antx[i]:=antx[i]-1;
          if (anty[i]+90)<=(anty[ii]) then if (anty[i]+91)>(anty[ii]) then anty[i]:=anty[i]+1;
          if (anty[i]-90)>=(anty[ii]) then if (anty[i]-91)<(anty[ii]) then anty[i]:=anty[i]-1;
+         }
         //Взаимодействие между муравьями
         for ii := 1 to 10 do
         begin
