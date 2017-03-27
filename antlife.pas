@@ -87,11 +87,11 @@ begin
         if antmemory[i][ii][2] <> antmemory[i][ii][1] then
         begin
           case antmemory[i][ii][2] of
-            1: setpixel(i+620, ii, clGreen);
-            2: setpixel(i+620, ii, clLime);
-            3: setpixel(i+620, ii, clRed);
-            4: setpixel(i+620, ii, clWhite);
-            5: setpixel(i+620, ii, clBlack);
+            1: setpixel(i+500, ii, clGreen);
+            2: setpixel(i+500, ii, clLime);
+            3: setpixel(i+500, ii, clRed);
+            4: setpixel(i+500, ii, clWhite);
+            5: setpixel(i+500, ii, clBlack);
           end;
         end;
         antmemory[i][ii][1] := antmemory[i][ii][2];
@@ -116,29 +116,30 @@ begin
       
      
          //Алгоритм поиска других муравьёв и движения к ним
-         if anttime[i]<=1000000 then if anttime[i]>=750000 then
+         if anttime[i]>=100001 then antmemory[1+i*9][2][2]:=2;
+         if anttime[i]<=100000 then if anttime[i]>=75000 then
          begin
          if (antx[i]+30)<=(antx[antfriend[i]]) then if (antx[i]+31)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-30)>=(antx[antfriend[i]]) then if (antx[i]-31)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+30)<=(anty[antfriend[i]]) then if (anty[i]+31)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-30)>=(anty[antfriend[i]]) then if (anty[i]-31)<(anty[antfriend[i]]) then y:=-1; 
-         antmemory[1+i*9][1][2]:=3;
+         antmemory[1+i*9][2][2]:=2;
          end;
-         if anttime[i]<=750000 then if anttime[i]>=500000 then
+         if anttime[i]<=75000 then if anttime[i]>=50000 then
          begin
          if (antx[i]+60)<=(antx[antfriend[i]]) then if (antx[i]+61)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-60)>=(antx[antfriend[i]]) then if (antx[i]-61)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+60)<=(anty[antfriend[i]]) then if (anty[i]+61)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1;
-         antmemory[1+i*9][1][2]:=4;
+         antmemory[1+i*9][2][2]:=3;
          end;
-         if anttime[i]<=500000 then
+         if anttime[i]<=50000 then
          begin
          if (antx[i]+90)<=(antx[antfriend[i]]) then if (antx[i]+91)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-90)>=(antx[antfriend[i]]) then if (antx[i]-91)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+90)<=(anty[antfriend[i]]) then if (anty[i]+91)>(anty[antfriend[i]]) then y:=1;
          if (anty[i]-90)>=(anty[antfriend[i]]) then if (anty[i]-91)<(anty[antfriend[i]]) then y:=-1;
-         antmemory[1+i*9][1][2]:=4;
+         antmemory[1+i*9][2][2]:=3;
          end;
        
         if antx[i] <= 5 then if x <= 0 then x := 1;
@@ -197,7 +198,7 @@ begin
       map[antx[i] - 1][anty[i] + 1][2] := 2;
      anttime[i]:=anttime[i]+50;
      antfun[i]:=antfun[i]-1;
-     antmemory[i*9][1][2]:=1;
+     antmemory[i*9][2][2]:=1;
     end;
     
     //если не рад
@@ -212,7 +213,7 @@ begin
       map[antx[i] + 1][anty[i] - 1][2] := 2;
       map[antx[i] + 1][anty[i] + 1][2] := 2;
       map[antx[i] - 1][anty[i] + 1][2] := 2;
-      antmemory[i*9][1][2]:=5;
+      antmemory[i*9][2][2]:=5;
     end;
     end;
     
@@ -223,7 +224,7 @@ begin
       if larvatime[i] >= 51 then larvatime[i] := larvatime[i] - 1;
       if larvatime[i] = 50 then
       begin
-        map[antx[i]][anty[i]][2] := 5; 
+        map[antx[i]][anty[i]][2] := 5;
         map[antx[i] + 1][anty[i]][2] := 5;
         map[antx[i] - 1][anty[i]][2] := 5;
         map[antx[i]][anty[i] + 1][2] := 5;
@@ -237,14 +238,18 @@ begin
         anty[i] := larvay[i];
         larvatime[i] := 0;
         gen := gen + 1;
-        textOut(512, 1, 'generation : ' + gen);
+        textOut(512, 101, 'generation : ' + gen);
       end;
     end;
-    textOut(512, 20, 'time : ' + t/100);
+    textOut(512, 120, 'time : ' + t/100);
     t := t + 1;
     for i:=1 to 10 do
     begin
-    textOut(512, i*10+i*3+30, 'ant '+i+' time : ' + anttime[i]/100);
+    textOut(512, i*10+i*3+130, 'ant '+i+' time : ' + anttime[i]/100);
+    end;
+    for i:=1 to 10 do
+    begin
+    textOut(512, i*10+i*3+260, 'ant '+i+' coods: ' + antx[i]+', '+anty[i]+'               ');
     end;
   until 2 = 3;
 end.
