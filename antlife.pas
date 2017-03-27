@@ -6,7 +6,7 @@ var
 antfun,antfriend: array[1..100] of integer;
 var
   map: array[1..500] of array[1..500] of array[1..2] of integer;
-
+var antmemory: array[1..100] of array[1..100]of array[1..2] of integer;
 var
   i, ii, x, y, t, gen, n: integer;
 
@@ -29,6 +29,14 @@ begin
     for ii := 5 to 495 do
     begin
       map[i][ii][2] := 5;  
+    end;   
+  end;
+  //Заполение правого экрана пустотой
+  for i := 1 to 100 do
+  begin
+    for ii := 1 to 100 do
+    begin
+     antmemory[i][ii][2] := 5;  
     end;   
   end;
   //создание муравьишек
@@ -71,7 +79,24 @@ begin
         map[i][ii][1] := map[i][ii][2];
       end;
     end;
-    
+    //обновление правого экрана
+    for i := 1 to 100 do
+    begin
+      for ii := 1 to 100 do
+      begin
+        if antmemory[i][ii][2] <> antmemory[i][ii][1] then
+        begin
+          case antmemory[i][ii][2] of
+            1: setpixel(i+620, ii, clGreen);
+            2: setpixel(i+620, ii, clLime);
+            3: setpixel(i+620, ii, clRed);
+            4: setpixel(i+620, ii, clWhite);
+            5: setpixel(i+620, ii, clBlack);
+          end;
+        end;
+        antmemory[i][ii][1] := antmemory[i][ii][2];
+      end;
+    end;
     //муравьи идут
     for i := 1 to 10 do
     begin
@@ -103,14 +128,16 @@ begin
          if (antx[i]+60)<=(antx[antfriend[i]]) then if (antx[i]+61)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-60)>=(antx[antfriend[i]]) then if (antx[i]-61)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+60)<=(anty[antfriend[i]]) then if (anty[i]+61)>(anty[antfriend[i]]) then y:=1;
-         if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1; 
+         if (anty[i]-60)>=(anty[antfriend[i]]) then if (anty[i]-61)<(anty[antfriend[i]]) then y:=-1;
+         antmemory[i*10][i*10][2]:=3;
          end;
          if anttime[i]<=500 then
          begin
          if (antx[i]+90)<=(antx[antfriend[i]]) then if (antx[i]+91)>(antx[antfriend[i]]) then x:=1;
          if (antx[i]-90)>=(antx[antfriend[i]]) then if (antx[i]-91)<(antx[antfriend[i]]) then x:=-1;
          if (anty[i]+90)<=(anty[antfriend[i]]) then if (anty[i]+91)>(anty[antfriend[i]]) then y:=1;
-         if (anty[i]-90)>=(anty[antfriend[i]]) then if (anty[i]-91)<(anty[antfriend[i]]) then y:=-1; 
+         if (anty[i]-90)>=(anty[antfriend[i]]) then if (anty[i]-91)<(anty[antfriend[i]]) then y:=-1;
+         antmemory[i*10][i*10][2]:=4;
          end;
        
         if antx[i] <= 5 then if x <= 0 then x := 1;
@@ -134,6 +161,7 @@ begin
          if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then antfun[i]:=500;
          if (anty[i]+10)<=(anty[ii]) then if (anty[i]+11)>(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
          if (anty[i]-10)>=(anty[ii]) then if (anty[i]-11)<(anty[ii]) then if (antx[i]-10)>=(antx[ii]) then if (antx[i]-11)<(antx[ii]) then antfun[i]:=500;
+         antmemory[i*10][i*10][2]:=2;
          // antfun[i]:=500;
           end;
         end;
@@ -168,6 +196,7 @@ begin
       map[antx[i] - 1][anty[i] + 1][2] := 2;
      anttime[i]:=anttime[i]+50;
      antfun[i]:=antfun[i]-1;
+  //   antmemory[i*10][i*10][2]:=1;
     end;
     
     //если не рад
@@ -182,6 +211,7 @@ begin
       map[antx[i] + 1][anty[i] - 1][2] := 2;
       map[antx[i] + 1][anty[i] + 1][2] := 2;
       map[antx[i] - 1][anty[i] + 1][2] := 2;
+      antmemory[i*10][i*10][2]:=5;
     end;
     end;
     
